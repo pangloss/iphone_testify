@@ -28,7 +28,7 @@ PROJ.exclude << '\.gitignore'
 PROJ.notes.exclude = %w(^README\.txt$ ^data/)
 PROJ.readme_file = 'README.rdoc'
 
-depend_on "paulanthonywilson-osx_filewatcher"
+depend_on "paulanthonywilson-osx_watchfolder"
 depend_on "rake"
 
 # EOF
