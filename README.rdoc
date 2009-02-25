@@ -1,32 +1,73 @@
 iphone_testify
-    by FIXME (your name)
-    FIXME (url)
+    by Paul Wilson
+    http://merecomplexities.com
 
 == DESCRIPTION:
 
-FIXME (describe your package)
+Utility to help set up and iPhone project for testing using code from {The Google Toolbox for Mac}[ (http://code.google.com/p/google-toolbox-for-mac/].
 
-== FEATURES/PROBLEMS:
+== FEATURES:
 
-* FIXME (list of features or problems)
+* Copies google test files into the "google_testing" directory
+* Creates a UnitTests directory
+* Adds Rakefile for compiling (via xcode) and reporting test failures (on console and via Growl) 
+* Adds an 'autoiphonetest.rb' file for _autotest_ style running of all tests when a change has been detected.
+
+== TODO:
+
+There are a few more things I'd like this gem to do.
+
+* Generation of test stubs
+* Automatic setup of _Unit Test_ target through XCode (via automation?)
+* Automatic addition of test files to _Unit Test_ target 
 
 == SYNOPSIS:
 
-  FIXME (code sample of usage)
+From console cd to your project root directory.  Type
+  % iphone_testify
+
+Unfortunately there are some manual stages needed to add a _Unit Test_ target  to your Xcode project.  This is based on the {Google Toolbox Wiki instructions}[http://code.google.com/p/google-toolbox-for-mac/wiki/iPhoneUnitTesting]
+
+1. Create a new iPhone Target (Cocoa Touch Application) via "Project Menu > New Target..." called "Unit Test".
+2. Add all the ObjectiveC files that have been copied to your 'google_testing' directory to this target
+3. Add your project files to this target
+4. Add a new 'run script' build phase as the last step of your target build via "Project Menu > New Build Phase > New Run Script Build Phase", and dragging it to the end of the build steps if needed.
+5. Edit your Run Script Build Phase by double clicking it, and set the shell to "/bin/sh" and the script to "google_testing/RunIPhoneUnitTest.sh"
+
+
+To autocompile/autorun all tests every time code changes
+
+  % ./autoiphonetest.rb
+
+
+To compile and run tests if code has changed since the last run
+
+  % rake
+
+To compile and run all tests even if nothing has changed since the last time
+  
+  % rake test_all
+  
 
 == REQUIREMENTS:
 
-* FIXME (list of requirements)
+* OS X Leopard
+* XCode 3.1 (containing the iPhone SDK)
+* Ruby (comes on Leopard)
 
 == INSTALL:
 
-* FIXME (sudo gem install, anything else)
+  % sudo gem sources -a http://gems.github.com # (you only need to do this once)
+  % sudo gem install paulanthonywilson-iphone_testify
 
 == LICENSE:
 
+Contains file taken from {The Google Toolbox for Mac}[http://code.google.com/p/google-toolbox-for-mac/].  See skeleton/google_testing/GoogleToolboxForMac.license which is also copied into the google_testing directory.
+
+
 (The MIT License)
 
-Copyright (c) 2008 FIXME (different license?)
+Copyright (c) 2008 
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

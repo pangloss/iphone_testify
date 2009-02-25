@@ -21,11 +21,14 @@ task :default => 'test:run'
 PROJ.name = 'iphone_testify'
 PROJ.authors = 'Paul Wilson'
 PROJ.email = 'paul.wilson@merecomplexities.com'
-PROJ.url = 'FIXME (project homepage)'
+PROJ.url = 'http://github.com/paulanthonywilson/iphone_testify/'
 PROJ.version = IphoneTestify::VERSION
 
 PROJ.exclude << '\.gitignore'
 PROJ.notes.exclude = %w(^README\.txt$ ^data/)
 PROJ.readme_file = 'README.rdoc'
+
+depend_on "paulanthonywilson-osx_filewatcher"
+depend_on "rake"
 
 # EOF
