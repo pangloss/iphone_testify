@@ -31,7 +31,7 @@ file BUILD_STATUS_FILE => Dir.glob("Classes/*.[hm]") + Dir.glob("UnitTests/*.m")
 end
 
 task :remove_built_file do
-  FileUtils.rm(BUILD_STATUS_FILE)
+  FileUtils.rm_f(BUILD_STATUS_FILE)
 end
 
 task :test_all=>[:remove_built_file, :test]
