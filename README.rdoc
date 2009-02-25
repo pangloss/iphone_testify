@@ -4,7 +4,7 @@ iphone_testify
 
 == DESCRIPTION:
 
-Utility to help set up and iPhone project for testing using code from {The Google Toolbox for Mac}[ (http://code.google.com/p/google-toolbox-for-mac/].
+Utility to help set up and iPhone project for testing using code from {The Google Toolbox for Mac}[http://code.google.com/p/google-toolbox-for-mac/].
 
 == FEATURES:
 
