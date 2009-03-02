@@ -1,3 +1,10 @@
-== 0.1.0 / 2009-02-25
+== 0.0.1 / 2009-02-25
 
 * Getting started
+
+== 0.0.6 / 2009-02-25
+
+* Tidy up.  
+
+* Adding growl pass/fail images for autotesting
+* Adding UnitTests directory as part of skeleton
