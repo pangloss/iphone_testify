@@ -20,14 +20,24 @@ class String
 end
 
 file BUILD_STATUS_FILE => Dir.glob("Classes/*.[hm]") + Dir.glob("UnitTests/*.m") do
-  failure_line = test
-  if failure_line
-    notice = ['Fail', failure_line.chomp]
+  failure_lines, notice = test
+  title = nil
+  if not failure_lines.empty?
+    title = 'Fail'
+    lines = failure_lines.compact.compact.uniq
+    errors = lines.reject { |l| l =~ /^Executed/ }
+    notice = lines.select { |l| l =~ /^Executed/ }.last
+    notice ||= errors.last
+    errors.each do |line|
+      growl title, line
+    end
   else
-    notice = ['Pass']
+    title = 'Pass'
   end
-  growl *notice
-  File.open(BUILD_STATUS_FILE, 'w') {|f| f.write(notice * ": ")}  
+  growl title, notice
+  File.open(BUILD_STATUS_FILE, 'w') do |f| 
+    f.write("#{ title }: #{ notice }")
+  end
 end
 
 task :remove_built_file do
@@ -46,23 +56,29 @@ end
 task :default => [:test]
 
 def test
-  output = `xcodebuild -target "Unit Test" -configuration Debug -sdk iphonesimulator2.1`
-  failure_line = nil
+  version = ENV['VERSION'] || '2.1'
+  output = `xcodebuild -target "Unit Test" -configuration Debug -sdk iphonesimulator#{ version }`
+  failure_lines = []
+  pass_line = ""
   output.each do |line|
-    if line =~ /error:|^Executed.*(\d+) failures/
+    if line and line =~ /error:|^Executed.*(\d+) failures|ld returned 1 exit status|Bus error|Segmentation fault/
       if $1.nil? || $1.to_i > 0
-        failure_line||= line
+        failure_lines << line.chomp
         line.colour = :red
       else
+        pass_line = line.chomp # the last one is the one we want.
         line.colour = :green
       end
     end
     print line.coloured
   end
-  failure_line
+  [failure_lines, pass_line]
 end
 
 def growl title, msg =""
-  img = "~/.autotest_images/#{title.downcase}.png"
-  `growlnotify -H localhost -n autotest --image #{img} -p 0 -m #{msg.inspect} #{title}` 
+  if `which growlnotify` != ''
+    img = "~/.autotest_images/#{title.downcase}.png"
+    img_flag = " --image #{ img }" if File.exist?(File.expand_path(img))
+    `growlnotify -n autotest #{img_flag} -p 0 -m #{msg.inspect} #{title}` rescue nil
+  end
 end
